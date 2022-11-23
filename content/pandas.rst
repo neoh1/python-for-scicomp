@@ -37,7 +37,7 @@ example dataset containing the passenger list from the Titanic, which is often u
 
 We can download the data from `this GitHub repository <https://raw.githubusercontent.com/pandas-dev/pandas/master/doc/data/titanic.csv>`__
 by visiting the page and saving it to disk, or by directly reading into
-a **dataframe**::
+a :class:`~pandas.DataFrame`::
 
     url = "https://raw.githubusercontent.com/pandas-dev/pandas/master/doc/data/titanic.csv"
     titanic = pd.read_csv(url, index_col='Name')
@@ -54,7 +54,10 @@ print some summary statistics of its numerical data::
 Ok, so we have information on passenger names, survival (0 or 1), age,
 ticket fare, number of siblings/spouses, etc. With the summary statistics we see that the average age is 29.7 years, maximum ticket price is 512 USD, 38\% of passengers survived, etc.
 
-Let's say we're interested in the survival probability of different age groups. With two one-liners, we can find the average age of those who survived or didn't survive, and plot corresponding histograms of the age distribution::
+Let's say we're interested in the survival probability of different
+age groups. With two one-liners, we can find the average age of those
+who survived or didn't survive, and plot corresponding histograms of
+the age distribution (:meth:`pandas.DataFrame.groupby`, :meth:`pandas.DataFrame.hist`)::
 
     print(titanic.groupby("Survived")["Age"].mean())
 
@@ -89,13 +92,12 @@ What's in a dataframe?
 
 As we saw above, pandas dataframes are a powerful tool for working with tabular data.
 A pandas
-`DataFrame object <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame>`__
+:class:`pandas.DataFrame`
 is composed of rows and columns:
 
 .. image:: img/pandas/01_table_dataframe.svg
 
-Each column of a dataframe is a
-`series object <https://pandas.pydata.org/docs/user_guide/dsintro.html#series>`__
+Each column of a dataframe is a :class:`pandas.Series` object
 - a dataframe is thus a collection of series::
 
     # print some information about the columns
@@ -112,25 +114,26 @@ and reading the titanic.csv datafile into a dataframe if needed, see above)::
     titanic.Age          # same as above
     type(titanic["Age"])
 
-The columns have names. Here's how to get them::
+The columns have names. Here's how to get them (:attr:`~pandas.DataFrame.columns`)::
 
     titanic.columns
 
-However, the rows also have names! This is what Pandas calls the **index**::
+However, the rows also have names! This is what Pandas calls the :obj:`~pandas.DataFrame.index`::
 
     titanic.index
 
 We saw above how to select a single column, but there are many ways of
 selecting (and setting) single or multiple rows, columns and values. We can
-refer to columns and rows either by number or by their name::
+refer to columns and rows either by number or by their name
+(:attr:`~pandas.DataFrame.loc`, :attr:`~pandas.DataFrame.iloc`,
+:attr:`~pandas.DataFrame.at`, :attr:`~pandas.DataFrame.iat`)::
 
     titanic.loc['Lam, Mr. Ali',"Age"]          # select single value by row and column
-    titanic.loc[:'Lam, Mr. Ali',"Name":"Age"]  # slice the dataframe by row and column *names*
+    titanic.loc[:'Lam, Mr. Ali',"Survived":"Age"]  # slice the dataframe by row and column *names*
     titanic.iloc[0:2,3:6]                      # same slice as above by row and column *numbers*
 
     titanic.at['Lam, Mr. Ali',"Age"] = 42      # set single value by row and column *name* (fast)
     titanic.at['Lam, Mr. Ali',"Age"]           # select single value by row and column *name* (fast)
-    titanic.at['Lam, Mr. Ali',"Age"] = 42      # set single value by row and column *name* (fast)
     titanic.iat[0,5]                           # select same value by row and column *number* (fast)
 
     titanic["is_passenger"] = True             # set a whole column
@@ -172,11 +175,25 @@ Exercises 1
 
    .. solution::
 
-       - Mean age of the first 10 passengers: ``titanic.iloc[:10,:]["Age"].mean()``
-         or ``titanic.loc[:9,"Age"].mean()`` or ``df.iloc[:10,5].mean()``.
-       - Survival rate among passengers over and under average age:
-         ``titanic[titanic["Age"] > titanic["Age"].mean()]["Survived"].mean()`` and
-         ``titanic[titanic["Age"] < titanic["Age"].mean()]["Survived"].mean()``.
+       - Mean age of the first 10 passengers::
+
+	   titanic.iloc[:10,:]["Age"].mean()
+
+	 or::
+
+	   titanic.loc[:"Nasser, Mrs. Nicholas (Adele Achem)","Age"].mean()
+
+	 or::
+
+	   titanic.iloc[:10,4].mean()
+
+       - Survival rate among passengers over and under average age::
+
+	   titanic[titanic["Age"] > titanic["Age"].mean()]["Survived"].mean()
+
+	 and::
+
+           titanic[titanic["Age"] < titanic["Age"].mean()]["Survived"].mean()
 
 
 Tidy data
@@ -229,18 +246,19 @@ For a detailed exposition of data tidying, have a look at
 Working with dataframes
 -----------------------
 
-We saw above how we can read in data into a dataframe using the :obj:`~pandas.read_csv` method.
+We saw above how we can read in data into a dataframe using the :func:`~pandas.read_csv` function.
 Pandas also understands multiple other formats, for example using :obj:`~pandas.read_excel`,
 :obj:`~pandas.read_hdf`, :obj:`~pandas.read_json`, etc. (and corresponding methods to write to file:
 :obj:`~pandas.DataFrame.to_csv`, :obj:`~pandas.DataFrame.to_excel`, :obj:`~pandas.DataFrame.to_hdf`, :obj:`~pandas.DataFrame.to_json`, etc.)
 
 But sometimes you would want to create a dataframe from scratch. Also this can be done
-in multiple ways, for example starting with a numpy array::
+in multiple ways, for example starting with a numpy array (see
+:class:`~pandas.DataFrame` docs::
 
     dates = pd.date_range('20130101', periods=6)
     df = pd.DataFrame(np.random.randn(6, 4), index=dates, columns=list('ABCD'))
 
-or a dictionary::
+or a dictionary (see same docs)::
 
     df = pd.DataFrame({'A': ['dog', 'cat', 'dog', 'cat', 'dog', 'cat', 'dog', 'dog'],
 		       'B': ['one', 'one', 'two', 'three', 'two', 'two', 'one', 'three'],
@@ -252,11 +270,10 @@ There are many ways to operate on dataframes. Let's look at a
 few examples in order to get a feeling of what's possible
 and what the use cases can be.
 
-We can easily split and concatenate or append dataframes::
+We can easily split and :func:`concatenate <pandas.concat>` dataframes::
 
     sub1, sub2, sub3 = df[:2], df[2:4], df[4:]
     pd.concat([sub1, sub2, sub3])
-    sub1.append([sub2, sub3])      # same as above
 
 When pulling data from multiple dataframes, a powerful :obj:`pandas.DataFrame.merge` method is
 available that acts similarly to merging in SQL. Say we have a dataframe containing the age of some athletes::
@@ -310,20 +327,33 @@ Exercises 2
     In the Titanic passenger list dataset,
     investigate the family size of the passengers (i.e. the "SibSp" column).
 
-    - What different family sizes exist in the passenger list? Hint: try the :obj:`~pandas.Series.unique` method
+    - What different family sizes exist in the passenger list? Hint: try the :meth:`~pandas.Series.unique` method
     - What are the names of the people in the largest family group?
     - (Advanced) Create histograms showing the distribution of family sizes for
       passengers split by the fare, i.e. one group of high-fare passengers (where
       the fare is above average) and one for low-fare passengers
       (Hint: instead of an existing column name, you can give a lambda function
-      as a parameter to ``hist`` to compute a value on the fly. For example
+      as a parameter to :meth:`~pandas.DataFrame.hist` to compute a value on the fly. For example
       ``lambda x: "Poor" if df["Fare"].loc[x] < df["Fare"].mean() else "Rich"``).
 
-   .. solution:: 
-   
-       - Existing family sizes: ``df["SibSp"].unique()``
-       - Names of members of largest family(ies): ``df[df["SibSp"] == 8]["Name"]``
-       - ``df.hist("SibSp", lambda x: "Poor" if df["Fare"].loc[x] < df["Fare"].mean() else "Rich", rwidth=0.9)``
+   .. solution::
+
+       - Existing family sizes::
+
+	   titanic["SibSp"].unique()
+
+       - We get 8 from above.  There is no ``Name`` column, since we
+	 made ``Name`` the index when we loaded the dataframe with
+	 ``read_csv``, so we use :attr:`pandas.DataFrame.index` to get
+	 the names.  So, names of members of largest family(ies)::
+
+           titanic[titanic["SibSp"] == 8].index
+
+       - Histogram of family size based on fare class::
+
+           titanic.hist("SibSp",
+                        lambda x: "Poor" if titanic["Fare"].loc[x] < titanic["Fare"].mean() else "Rich",
+                        rwidth=0.9)
 
 
 
@@ -333,21 +363,33 @@ Time series superpowers
 
 An introduction of pandas wouldn't be complete without mention of its
 special abilities to handle time series. To show just a few examples,
-we will use a new dataset of Nobel prize laureates::
+we will use a new dataset of Nobel prize laureates available through
+an API of the Nobel prize organisation at
+https://api.nobelprize.org/v1/laureate.csv .
 
-    nobel = pd.read_csv("http://api.nobelprize.org/v1/laureate.csv")
+Unfortunately this API does not allow "non-browser requests", so
+:obj:`pandas.read_csv` will not work. We can either open the above link in
+a browser and download the file, or use the JupyterLab interface by clicking
+"File" and "Open from URL", and then save the CSV file to disk.
+
+We can then load and explore the data::
+
+    # File → Open from URL → enter https://api.nobelprize.org/v1/laureate.csv
+    # This opens it in JupyterLab but also saves it as laureate.csv
+    nobel = pd.read_csv("laureate.csv")
     nobel.head()
 
 This dataset has three columns for time, "born"/"died" and "year".
 These are represented as strings and integers, respectively, and
-need to be converted to datetime format::
+need to be converted to datetime format.  :func:`pandas.to_datetime`
+makes this easy::
 
     # the errors='coerce' argument is needed because the dataset is a bit messy
     nobel["born"] = pd.to_datetime(nobel["born"], errors ='coerce')
     nobel["died"] = pd.to_datetime(nobel["died"], errors ='coerce')
     nobel["year"] = pd.to_datetime(nobel["year"], format="%Y")
 
-Pandas knows a lot about dates::
+Pandas knows a lot about dates (using :attr:`~pandas.Series.dt`)::
 
     print(nobel["born"].dt.day)
     print(nobel["born"].dt.year)
@@ -358,11 +400,11 @@ to one decimal::
 
     nobel["lifespan"] = round((nobel["died"] - nobel["born"]).dt.days / 365, 1)
 
-and then plot a histogram of lifespans::
+and then plot a :meth:`histogram <pandas.DataFrame.hist>` of lifespans::
 
     nobel.hist(column='lifespan', bins=25, figsize=(8,10), rwidth=0.9)
 
-Finally, let's see one more example of an informative plot
+Finally, let's see one more example of an informative plot (:meth:`~pandas.DataFrame.boxplot`)
 produced by a single line of code::
 
     nobel.boxplot(column="lifespan", by="category")
@@ -389,8 +431,8 @@ Exercises 3
 	  countries = np.array([COUNTRY1, COUNTRY2, COUNTRY3, COUNTRY4])
 	  subset = nobel.loc[nobel['bornCountry'].isin(countries)]
 
-    - Use ``groupby`` to compute how many nobel prizes each country received in
-      each category. The ``size()`` method tells us how many rows, hence nobel
+    - Use :meth:`~pandas.DataFrame.groupby` to compute how many nobel prizes each country received in
+      each category. The :meth:`~pandas.core.groupby.GroupBy.size` method tells us how many rows, hence nobel
       prizes, are in each group::
 
 	  nobel.groupby(['bornCountry', 'category']).size()
@@ -398,9 +440,13 @@ Exercises 3
     - (Optional) Create a pivot table to view a spreadsheet like structure, and view it
 
 	- First add a column “number” to the nobel dataframe containing 1’s
-	  (to enable the counting below).
+	  (to enable the counting below).  We need to make a copy of
+	  ``subset``, because right now it is only a view::
 
-	- Then create the pivot table::
+	      subset = subset.copy()
+	      subset.loc[:, 'number'] = 1
+
+	- Then create the :meth:`~pandas.DataFrame.pivot_table`::
 
 	    table = subset.pivot_table(values="number", index="bornCountry", columns="category", aggfunc=np.sum)
 
@@ -412,7 +458,7 @@ Exercises 3
 
     - Play around with other nice looking plots::
 
-	sns.violinplot(y="year", x="bornCountry",inner="stick", data=subset);
+	sns.violinplot(y="year", x="bornCountry", inner="stick", data=subset);
 
       ::
 
@@ -428,10 +474,41 @@ Exercises 3
 	sns.catplot(x="bornCountry", col="category", data=subset_physchem, kind="count");
 
 
+   .. solution::
+
+      We use the :meth:`describe` method:
+      
+      ::
+
+         nobel.bornCountryCode.describe()
+         # count     956
+	 # unique     81
+	 # top        US
+	 # freq      287
+
+      We see that the US has received the largest number of Nobel prizes,
+      and 81 countries are represented.
+
+      To calculate the age at which laureates receive their prize, we need
+      to ensure that the "year" and "born" columns are in datetime format::
+
+	nobel["born"] = pd.to_datetime(nobel["born"], errors ='coerce')
+	nobel["year"] = pd.to_datetime(nobel["year"], format="%Y")
+
+      Then we add a column with the age at which Nobel prize was received
+      and plot a histogram::
+
+	nobel["age_nobel"] = round((nobel["year"] - nobel["born"]).dt.days / 365, 1)
+	nobel.hist(column="age_nobel", bins=25, figsize=(8,10), rwidth=0.9)
+
+      We can print names of all laureates from a given country, e.g.::
+
+	nobel[nobel["country"] == "Sweden"].loc[:, "firstname":"surname"]
+   
 Beyond the basics
 -----------------
 
-Larger DataFrame operations might be faster using :obj:`~pandas.eval()` with string expressions, `see
+Larger DataFrame operations might be faster using :func:`~pandas.eval` with string expressions, `see
 <https://jakevdp.github.io/PythonDataScienceHandbook/03.12-performance-eval-and-query.html>`__::
 
 	import pandas as pd
@@ -439,12 +516,13 @@ Larger DataFrame operations might be faster using :obj:`~pandas.eval()` with str
 	rng = np.random.RandomState(42)
 	df1, df2, df3, df4 = (pd.DataFrame(rng.rand(nrows, ncols))
 			      for i in range(4))
+
 Adding dataframes the pythonic way yields::
 
 	%timeit df1 + df2 + df3 + df4
 	# 80ms
 	
-And by using :obj:`~pandas.eval()`::
+And by using :func:`~pandas.eval`::
 
         %timeit pd.eval('df1 + df2 + df3 + df4')
 	# 40ms

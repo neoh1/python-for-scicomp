@@ -18,7 +18,7 @@
 # -- Project information -----------------------------------------------------
 
 project = 'Python for Scientific Computing'
-copyright = '2020, The contributors'
+copyright = '2020-2022, The contributors'
 author = 'The contributors'
 github_user = 'AaltoSciComp'
 github_repo_name = 'python-for-scicomp'  # auto-detected from dirname if blank
@@ -40,7 +40,16 @@ extensions = [
     'sphinx.ext.mathjax',
     'sphinx_aaltoscicomp_branding',
     'sphinx_plausible',
+    'sphinxext.opengraph',
 ]
+myst_enable_extensions = ['colon_fence']
+
+ogp_site_name = "Python for Scientific Computing"
+ogp_site_url = 'https://aaltoscicomp.github.io/python-for-scicomp/'
+import datetime
+if datetime.date.today() < datetime.date(2022,12,15):
+    ogp_image = 'https://www.aalto.fi/sites/g/files/flghsv161/files/styles/o_914w_ah_n/public/2022-11/PFSC22_v2.png'
+    ogp_image_alt = 'Python for Scientific Computing course logo with date of 22-25/11/2022, twitch.tv/coderefinery, and partner logos'
 
 import os
 plausible_domain = 'aaltoscicomp.github.io/python-for-scicomp'
@@ -90,4 +99,5 @@ intersphinx_mapping = {
     'numpy': ('https://numpy.org/doc/stable', None),
     'pandas': ('https://pandas.pydata.org/pandas-docs/stable/', None),
     'matplotlib': ('https://matplotlib.org/stable', None),
+    'requests': ('https://requests.readthedocs.io/en/latest/', None),
     }
