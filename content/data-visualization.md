@@ -45,7 +45,7 @@ From [Claus O. Wilke: "Fundamentals of Data Visualization"](https://clauswilke.c
     R users will be more at home
   - [PyNGL](https://www.pyngl.ucar.edu/Examples/gallery.shtml):
     used in the weather forecast community
-  - [K3D](https://k3d-jupyter.org/showcase/):
+  - [K3D](https://k3d-jupyter.org/gallery/):
     Jupyter notebook extension for 3D visualization
   - ...
 - Two main families of libraries: procedural (e.g. Matplotlib) and declarative
@@ -273,7 +273,7 @@ calls.
 - Matplotlib cheatsheets: <https://github.com/matplotlib/cheatsheets>
 - You can also select among pre-defined themes/
   [style
-  sheets](https://matplotlib.org/3.1.1/gallery/style_sheets/style_sheets_reference.html)
+  sheets](https://matplotlib.org/stable/gallery/style_sheets/style_sheets_reference.html)
   with {obj}`~matplotlib.style.use`, for instance:
   ```python
   plt.style.use('ggplot')

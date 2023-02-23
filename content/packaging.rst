@@ -101,12 +101,12 @@ To make our example package pip-installable we need to add one more file:
    │   └── subtracting.py
    ├── LICENSE
    ├── README.md
-   └── setup.py
+   └── pyproject.toml
 
-This is how ``setup.py`` looks:
+This is how ``pyproject.toml`` looks:
 
-.. literalinclude:: packaging-example-project/setup.py
-   :caption: setup.py
+.. literalinclude:: packaging-example-project/pyproject.toml
+   :caption: pyproject.toml
    :emphasize-lines: 18-20
 
 Note how our package requires ``scipy`` and we decided to not pin the version
@@ -154,7 +154,7 @@ We need two more things:
 
 Let's try it out. First we create the distribution package::
 
-  $ python setup.py sdist
+  $ python3 -m build
 
 We need twine::
 
@@ -180,13 +180,13 @@ The solution that we have used to create the example package (using
 ``setuptools`` and ``twine``) is not the only approach. There are many ways to
 achieve this and we avoided going into too many details and comparisons to not
 confuse too much. If you web-search this, you will also see that recently the
-trend goes towards using ``pyproject.toml`` as more general alternative to
-``setup.py``.
+trend goes towards using ``pyproject.toml`` as more general
+alternative to the previous ``setup.py``.
 
 There are at least two tools which try to make the packaging and PyPI interaction easier:
 
 - `Poetry <https://python-poetry.org/>`__
-- `Flit <https://flit.readthedocs.io/>`__
+- `Flit <https://flit.pypa.io/>`__
 
 
 Building a conda package and share it
@@ -253,7 +253,9 @@ library for research software.
 
    .. callout:: Conda package location
 
-      Look at the messages produced while building. The location of the local conda package is given (search for `anaconda upload`)::
+      Look at the messages produced while building. The location of the local conda package is given (search for `anaconda upload`):
+
+      .. code-block:: none
 
 	~/anaconda3/conda-bld/win-64/runtest-2.2.1-py38_0.tar.bz2
 
@@ -316,6 +318,7 @@ for publishing your packages.
 
 .. keypoints::
 
-   - Organize your code for publishing
-   - Pypi
-   - conda
+   - It is worth it to organize your code for publishing, even if only
+     you are using it.
+   - PyPI is a place for Python packages
+   - conda is similar but is not limited to Python
