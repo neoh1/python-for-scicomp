@@ -93,7 +93,11 @@ then using `Binder <https://mybinder.org/>`__.
 
 .. challenge:: Binder-2: Exercise/demo: Make your notebooks reproducible by anyone (15 min)
 
-   Instructor demonstrates this:
+   Instructor demonstrates this.  **This exercise (and all following)
+   requires git/GitHub knowledge and accounts, which wasn't a
+   prerequisite of this course.  Thus, this is a demo (and might even
+   be too fast for you to type-along).  Watch the video if you
+   are reading this later on**:
 
    - Creates a GitHub repository
    - Uploads the notebook file
@@ -113,7 +117,7 @@ then using `Binder <https://mybinder.org/>`__.
    - Check that your notebook repository now has a "launch binder"
      badge in your `README.md` file on GitHub.
    - Try clicking the button and see how your repository is launched
-     on Binder (can take a minute or two). Your notebooks can now be expored and executed in the cloud.
+     on Binder (can take a minute or two). Your notebooks can now be explored and executed in the cloud.
    - Enjoy being fully reproducible!
 
 

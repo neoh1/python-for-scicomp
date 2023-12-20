@@ -18,7 +18,7 @@
 # -- Project information -----------------------------------------------------
 
 project = 'Python for Scientific Computing'
-copyright = '2020-2022, The contributors'
+copyright = '2020-2023, The contributors'
 author = 'The contributors'
 github_user = 'AaltoSciComp'
 github_repo_name = 'python-for-scicomp'  # auto-detected from dirname if blank
@@ -39,7 +39,6 @@ extensions = [
     'sphinx.ext.intersphinx',
     'sphinx.ext.mathjax',
     'sphinx_aaltoscicomp_branding',
-    'sphinx_plausible',
     'sphinxext.opengraph',
 ]
 myst_enable_extensions = ['colon_fence']
@@ -51,14 +50,17 @@ if datetime.date.today() < datetime.date(2022,12,15):
     ogp_image = 'https://www.aalto.fi/sites/g/files/flghsv161/files/styles/o_914w_ah_n/public/2022-11/PFSC22_v2.png'
     ogp_image_alt = 'Python for Scientific Computing course logo with date of 22-25/11/2022, twitch.tv/coderefinery, and partner logos'
 
+copybutton_exclude = '.linenos, .gp'
+
 import os
-plausible_domain = 'aaltoscicomp.github.io/python-for-scicomp'
-plausible_script = 'https://plausible.cs.aalto.fi/js/plausible.js'
-plausible_enabled = (
+if (
     'GITHUB_ACTION' in os.environ
     and os.environ.get('GITHUB_REPOSITORY', '').lower() == 'aaltoscicomp/python-for-scicomp'
     and os.environ.get('GITHUB_REF') == 'refs/heads/master'
-      )
+    ):
+    html_js_files = [
+        ('https://plausible.cs.aalto.fi/js/script.js', {"data-domain": "aaltoscicomp.github.io/python-for-scicomp", "defer": "defer"}),
+    ]
 
 
 # Add any paths that contain templates here, relative to this directory.

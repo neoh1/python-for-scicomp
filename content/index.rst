@@ -2,16 +2,15 @@
 Python for Scientific Computing
 ===============================
 
-.. admonition:: Attending the course 22-25.november.2022?
+.. admonition:: Attending the course 7-10.november.2023?
 
    `See the course page here
-   <https://scicomp.aalto.fi/training/scip/python-for-scicomp-2022/>`__.
-   Whether you are or aren't, the course material is below.
+   <https://scicomp.aalto.fi/training/scip/python-for-scicomp-2023/>`__
+   and watch at https://twitch.tv/coderefinery.
+   Whether you are or aren't, the course material is below.  Videos
+   will appear in `this playlist <https://www.youtube.com/playlist?list=PLZLVmS9rf3nNI3oQEqSJW6yXltOAZnkpa>`__.
 
-   Videos: `YouTube <https://www.youtube.com/playlist?list=PLZLVmS9rf3nOm3xkYuInBWPUvS93sAUlk>`__
-
-   Q&A: `days 1-2 <https://hackmd.io/@coderefinery/python2022archive>`__, `days 3-4 <https://hackmd.io/@coderefinery/python2022archive2>`__
-
+   
 Python is a modern, object-oriented programming language, which has
 become popular in several areas of software development. This course
 discusses how Python can be utilized in scientific computing. The
@@ -60,6 +59,7 @@ to learn yourself as you need to.
      <https://hackmd.io/@coderefinery/python2022archive>`__, `days 3-4
      <https://hackmd.io/@coderefinery/python2022archive2>`__
 
+   * 2023 (appearing here as the course happens): `Videos <https://www.youtube.com/playlist?list=PLZLVmS9rf3nNI3oQEqSJW6yXltOAZnkpa>`__
 
 
 .. csv-table::
@@ -94,14 +94,15 @@ to learn yourself as you need to.
    pandas
    data-visualization
    data-formats
+   productivity
    scripts
-   web-apis
    scipy
    libraries
-   parallel
    dependencies
    binder
+   parallel
    packaging
+   web-apis
 
 .. toctree::
    :maxdepth: 1
@@ -135,7 +136,8 @@ The course is targeted towards these learner personas:
 * B is a mid-to-late undergraduate student who has used Python in some
   classes.  They have possibly learned the syntax and enough to use it
   in courses, but in a course-like manner where they are expected to
-  create everything themselves.
+  create everything themselves: they want to know how to reuse tools
+  that already exist.
 
 
 Motivation
@@ -220,6 +222,6 @@ See also
 ========
 
 * `High Performance Data Analytics in Python
-  <https://enccs.github.io/HPDA-Python/>` is a logical follow-up to
+  <https://enccs.github.io/HPDA-Python/>`__ is a logical follow-up to
   this lesson that goes more in-depth to tools of high-performance
   and large-scale Python.
